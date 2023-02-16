@@ -1,0 +1,88 @@
+{
+  "name": "nca",
+  "displayName": "NCA",
+  "description": "nca for vscode",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:nca.runNca"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "NCA Configuration",
+      "properties": {
+        "nca.NCA Location": {
+          "order": 0,
+          "type": "string",
+          "default": "",
+          "description": "NCA path on local drive"
+        },
+        "nca.Python Path": {
+          "order": 1,
+          "type": "string",
+          "default": ""
+        },
+        "nca.Parameters": {
+          "order": 2,
+          "type": "string",
+          "default": "",
+          "description": "NCA Command Line Parameters"
+        },
+        "nca.Output Format": {
+          "order": 3,
+          "type": "string",
+          "default": "txt",
+          "description": "Format of the connectivity output (output_format)"
+        },
+        "nca.Output File": {
+          "order": 5,
+          "type": "string",
+          "default": "",
+          "description": "Output file path (file_out)"
+        },
+        "nca.Graph File": {
+          "order": 4,
+          "type": "string",
+          "default": "",
+          "description": "Graph file path"
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "nca.runNca",
+        "title": "Run NCA"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.0.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@types/vscode": "^1.74.0",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "@vscode/test-electron": "^2.2.0",
+    "eslint": "^8.28.0",
+    "glob": "^8.0.3",
+    "mocha": "^10.1.0",
+    "typescript": "^4.9.3"
+  },
+  "dependencies": {
+    "python-shell": "^3.0.1"
+  }
+}
