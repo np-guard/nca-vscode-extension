@@ -3,6 +3,7 @@
   "displayName": "NCA",
   "description": "nca for vscode",
   "version": "0.0.1",
+  "publisher": "NP-Guard",
   "engines": {
     "vscode": "^1.74.0"
   },
