@@ -40,8 +40,8 @@ export function activate(context: vscode.ExtensionContext) {
 
 		// setup options object
 		options.scriptPath = nca_path
-	    options.pythonPath = pythion_path,
-	    options.args = cmd_params.split(" ");
+		options.pythonPath = pythion_path,
+		options.args = cmd_params.split(" ");
 		let orig_args = options.args;
 		options.args.push("--output_format", output_format);
 
