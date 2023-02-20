@@ -32,10 +32,10 @@ export function activate(context: vscode.ExtensionContext) {
 		const config = vscode.workspace.getConfiguration('nca');
 		const nca_path = config.get('NCA Location');
 		const pythion_path = config.get('Python path');
-		const cmd_params = config.get('parameters');
-		const output_format = config.get('output format');
-		const outfile_path = config.get('output file');
-		const graphfile_path = config.get('graph file');
+		const cmd_params = config.get('Parameters');
+		const output_format = config.get('Output Format');
+		const outfile_path = config.get('Output File');
+		const graphfile_path = config.get('Graph File');
 
 		// setup options object
 		options.scriptPath = nca_path

@@ -83,6 +83,10 @@
     "mocha": "^10.1.0",
     "typescript": "^4.9.3"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/np-guard/nca-vscode-extension.git"
+  },
   "dependencies": {
     "python-shell": "^3.0.1"
   }
