@@ -2,6 +2,7 @@
   "name": "nca",
   "displayName": "NCA",
   "description": "nca for vscode",
+  "icon": "./images/npg-logo.png",
   "version": "0.0.1",
   "publisher": "NP-Guard",
   "engines": {
