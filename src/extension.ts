@@ -2,7 +2,6 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import {PythonShell} from 'python-shell';
-import { systemDefaultPlatform } from '@vscode/test-electron/out/util';
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -18,7 +17,7 @@ export function activate(context: vscode.ExtensionContext) {
 	  pythonPath: '',
 	  scriptPath: '',
 	  pythonOptions: ['-u'], // get print results in real-time
-	  args: []
+	  args: ['']
 	};
 
 	let outputChannel = vscode.window.createOutputChannel("NCA channel");
@@ -51,7 +50,7 @@ export function activate(context: vscode.ExtensionContext) {
 			console.log('results: %s err: %s', results, err);
             
 			// prepare and show output results
-			let newArrayOfStrings : string = results.join("\n");
+			let newArrayOfStrings: string = results!.join("\n");
 			outputChannel.clear();
 			outputChannel.append(newArrayOfStrings);
 			outputChannel.show();
@@ -83,14 +82,14 @@ export function activate(context: vscode.ExtensionContext) {
 				console.log('results: %s err: %s', results, err);
 
 				const spawn = require('child_process').spawn;
-				function convertDotToGif(dotFilePath, gifFilePath) {
+				function convertDotToGif(dotFilePath: string, gifFilePath: string) {
 					return new Promise((resolve, reject) => {
 						const dot = spawn('dot', ['-Tgif', '-o', gifFilePath, dotFilePath]);
-						dot.on('close', (code) => {
-							if (code === 0) {
-								resolve();
+						dot.on('close', (exitCode: number) => {
+							if (exitCode === 0) {
+								resolve(0);
 							} else {
-								reject(`dot process exited with code ${code}`);
+								reject(`dot process exited with code ${exitCode}`);
 							}
 						});
 					});
@@ -105,13 +104,13 @@ export function activate(context: vscode.ExtensionContext) {
 						
 						// delete dot file
 						const fs = require('fs');
-						function deleteFile(filePath) {
+						function deleteFile(filePath: string) {
 							return new Promise((resolve, reject) => {
-								fs.unlink(filePath, (error) => {
+								fs.unlink(filePath, (error: any) => {
 									if (error) {
 										reject(error);
 									} else {
-										resolve();
+										resolve(0);
 									}
 								});
 							});
