@@ -9,7 +9,6 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
-	console.log('Starting Python shell and running NCA');
 	type modetype = 'text' | 'json' | 'binary' | undefined;
 
 	let options = {
@@ -17,7 +16,7 @@ export function activate(context: vscode.ExtensionContext) {
 	  pythonPath: '',
 	  scriptPath: '',
 	  pythonOptions: ['-u'], // get print results in real-time
-	  args: ['']
+	  args: [] as string[]
 	};
 
 	let outputChannel = vscode.window.createOutputChannel("NCA channel");
@@ -32,27 +31,52 @@ export function activate(context: vscode.ExtensionContext) {
 		const config = vscode.workspace.getConfiguration('nca');
 		const nca_path = config.get('NCA Location');
 		const pythion_path = config.get('Python path');
+		let yamls_path = config.get('YAML files path');
 		const cmd_params = config.get('Parameters');
 		const output_format = config.get('Output Format');
 		const outfile_path = config.get('Output File');
 		const graphfile_path = config.get('Graph File');
 
 		// setup options object
-		options.scriptPath = nca_path
-		options.pythonPath = pythion_path,
-		options.args = cmd_params.split(" ");
+		options.scriptPath = nca_path;
+		options.pythonPath = pythion_path;
+		if (cmd_params == ''){
+			options.args = []
+		} else {
+			options.args = cmd_params.split(" ");
+		}
 		let orig_args = options.args;
+		if (yamls_path === '') {
+			// use the current project path
+			if(vscode.workspace.workspaceFolders !== undefined) {
+				yamls_path = vscode.workspace.workspaceFolders[0].uri.fsPath;
+			} else {
+				outputChannel.append('WARNING: Could not extract project path as default YAMLs path');
+				outputChannel.show();
+			}
+		}
+		if (!cmd_params.includes('--connectivity')) {
+			options.args.push("--connectivity", `${yamls_path}`);
+		}
+		if (!cmd_params.includes('--resource_list')) {
+			options.args.push("--resource_list", `${yamls_path}`);
+		}
 		options.args.push("--output_format", output_format);
 
 		// run nca
-		PythonShell.run('nca_cli.py', options, function (err, results) {
+		const nca_command = 'nca/nca_cli.py'
+		PythonShell.run(nca_command, options, function (err, results) {
 
 			console.log('results: %s err: %s', results, err);
-            
+			let output = ''
+			if (err) {
+				output = err.message
+			} else {
+				output = results!.join("\n")
+			}	
 			// prepare and show output results
-			let newArrayOfStrings: string = results!.join("\n");
 			outputChannel.clear();
-			outputChannel.append(newArrayOfStrings);
+			outputChannel.append(output);
 			outputChannel.show();
 		});
 		
@@ -62,8 +86,7 @@ export function activate(context: vscode.ExtensionContext) {
 			options.args = orig_args;
 			options.args.push("--output_format", output_format);
 			options.args.push("--file_out", outfile_path);
-
-			PythonShell.run('nca_cli.py', options, function (err, results) {
+			PythonShell.run(nca_command, options, function (err, results) {
 				// results is an array consisting of messages collected during execution
 				console.log('results: %s err: %s', results, err);
 			});
@@ -73,64 +96,14 @@ export function activate(context: vscode.ExtensionContext) {
 		if (graphfile_path) {
 			// run again to create a dot file
 			options.args = orig_args;
-			options.args.push("--output_format", 'dot');
-			const temp_outfile = graphfile_path+'.dot';
-			options.args.push("--file_out", temp_outfile);
+			options.args.push("--output_format", 'jpg');
+			options.args.push("--file_out", graphfile_path);
 
-			PythonShell.run('nca_cli.py', options, function (err, results) {
+			PythonShell.run(nca_command, options, function (err, results) {
 				// results is an array consisting of messages collected during execution
 				console.log('results: %s err: %s', results, err);
-
-				const spawn = require('child_process').spawn;
-				function convertDotToGif(dotFilePath: string, gifFilePath: string) {
-					return new Promise((resolve, reject) => {
-						const dot = spawn('dot', ['-Tgif', '-o', gifFilePath, dotFilePath]);
-						dot.on('close', (exitCode: number) => {
-							if (exitCode === 0) {
-								resolve(0);
-							} else {
-								reject(`dot process exited with code ${exitCode}`);
-							}
-						});
-					});
-				}
-				const dotFilePath = temp_outfile;
-				const gifFilePath = graphfile_path;
-				convertDotToGif(dotFilePath, gifFilePath)
-					.then(() => {
-						console.log(`Dot file converted to gif: ${gifFilePath}`);
-						// Open a image in the main area
-						vscode.commands.executeCommand("vscode.open", vscode.Uri.file(gifFilePath));
-						
-						// delete dot file
-						const fs = require('fs');
-						function deleteFile(filePath: string) {
-							return new Promise((resolve, reject) => {
-								fs.unlink(filePath, (error: any) => {
-									if (error) {
-										reject(error);
-									} else {
-										resolve(0);
-									}
-								});
-							});
-						}
-						// Example usage
-						const filePath = temp_outfile;
-						deleteFile(filePath)
-							.then(() => {
-								console.log(`File deleted: ${filePath}`);
-							})
-							.catch((error) => {
-								console.error(`Error deleting file: ${error}`);
-							});
-					
-					})
-					.catch((error) => {
-						console.error(`Error converting dot file to gif: ${error}`);
-					});
-
-
+				// Open a image in the main area
+				vscode.commands.executeCommand("vscode.open", vscode.Uri.file(graphfile_path));
 			});
 		}
 

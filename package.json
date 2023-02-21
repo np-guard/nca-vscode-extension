@@ -11,9 +11,6 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "onCommand:nca.runNca"
-  ],
   "main": "./out/extension.js",
   "contributes": {
     "configuration": {
@@ -30,14 +27,20 @@
           "type": "string",
           "default": ""
         },
-        "nca.Parameters": {
+        "nca.YAML files path": {
           "order": 2,
+          "type": "string",
+          "default": "",
+          "description": "Path to YAML files (empty will use the current project directory)"
+        },
+        "nca.Parameters": {
+          "order": 3,
           "type": "string",
           "default": "",
           "description": "NCA Command Line Parameters"
         },
         "nca.Output Format": {
-          "order": 3,
+          "order": 4,
           "type": "string",
           "default": "txt",
           "description": "Format of the connectivity output (output_format)"
@@ -49,7 +52,7 @@
           "description": "Output file path (file_out)"
         },
         "nca.Graph File": {
-          "order": 4,
+          "order": 6,
           "type": "string",
           "default": "",
           "description": "Graph file path"

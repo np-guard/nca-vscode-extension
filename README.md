@@ -48,6 +48,7 @@ To use this extension you will need:
 Python: [Python instalation](https://www.python.org/downloads/) 
 
 NCA: [NCA instalation](https://pypi.org/project/network-config-analyzer/)
+Add the NCA path to the system's path enviromant parameter  
 
 Graphviz: [Graphviz installation](https://graphviz.org/download/)
 
@@ -55,14 +56,21 @@ Graphviz: [Graphviz installation](https://graphviz.org/download/)
 
 This extension contributes the following settings:
 
+* `nca.NCA Location`: The path to the NCAinstallation.
 * `nca.Python Path`: The path to the Python installation.
+* `nca.YAML files path`: Path to YAML files (empty will use the current project directory).
 * `nca.Parameters`: NCA Command Line Parameters.
 * `nca.Output Format`: Format of the connectivity output (output_format).
 * `nca.Output File`: Output file path (file_out).
-* `nca.Graph File`: Graph file path.
+* `nca.Graph File`: Graph file path (jpg file).
 
 # 1.0.0
 
 Initial release of the NCA extension
 
+# Getting Started
+
+1. Open the root folder of your YAML files in VSCode.
+2. Configure the NCA and Python paths
+3. Activate the 'Run NCA' command (shift-ctrl-p for the list of commands) 
 ---
