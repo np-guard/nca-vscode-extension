@@ -30,7 +30,7 @@ export function activate(context: vscode.ExtensionContext) {
 		const vscode = require('vscode');
 		const config = vscode.workspace.getConfiguration('nca');
 		const nca_path = config.get('NCA Location');
-		const pythion_path = config.get('Python path');
+		const pythion_path = config.get('Python Path');
 		let yamls_path = config.get('YAML files path');
 		const cmd_params = config.get('Parameters');
 		const output_format = config.get('Output Format');
