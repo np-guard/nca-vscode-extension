@@ -24,7 +24,7 @@ export function activate(context: vscode.ExtensionContext) {
 			mode: "text",
 			pythonPath: python_path,
 			scriptPath: nca_path,
-			pythonOptions: ['-u'], // get print results in real-time
+			pythonOptions: ['-u -p '+nca_path], // get print results in real-time
 			args: [] as string[]
 		};
 
@@ -53,7 +53,6 @@ export function activate(context: vscode.ExtensionContext) {
 		outputChannel.clear();
 		let shell = PythonShell.run(nca_command, options, function (err, results) {
 			console.log('results: %s err: %s', results, err);
-			let output = ''
 			if (err) {
 				outputChannel.append(err.message)
 				outputChannel.show()
