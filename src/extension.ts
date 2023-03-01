@@ -24,7 +24,7 @@ export function activate(context: vscode.ExtensionContext) {
 			mode: "text",
 			pythonPath: python_path,
 			scriptPath: nca_path,
-			pythonOptions: ['-u -p '+nca_path], // get print results in real-time
+			pythonOptions: ['-u'], // get print results in real-time
 			args: [] as string[]
 		};
 
