@@ -64,7 +64,7 @@ This extension contributes the following settings:
 * `nca.Output File`: Output file path (file_out).
 * `nca.Graph File`: Graph file path (jpg file).
 
-# 1.0.0
+# 0.0.1
 
 Initial release of the NCA extension
 
